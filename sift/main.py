@@ -10,7 +10,7 @@ KEYPOINTS_LIMIT = 20
 
 
 def extract_sift_features(image: ndarray) -> tuple[list, list]:
-    """Extract the SIFT features of the image.
+    """Extract the SIFT features (keypoints and descriptors) of the image.
 
     Args:
     ----
@@ -21,8 +21,7 @@ def extract_sift_features(image: ndarray) -> tuple[list, list]:
         A tuple with the keypoints and the descriptors.
 
     """
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    keypoints, descriptors = sift.detectAndCompute(gray, None)
+    keypoints, descriptors = sift.detectAndCompute(image, None)
     return keypoints, descriptors
 
 
@@ -113,15 +112,22 @@ def draw_matches_on_frame(frame: ndarray, best_image: ndarray, keypoints_frame: 
     )
     overlay_height, overlay_width = matches_img.shape[:2]
 
-    # Resize the match image to fit in the frame
     if overlay_height > frame.shape[0] or overlay_width > frame.shape[1]:
         scale_factor = min(frame.shape[0] / overlay_height, frame.shape[1] / overlay_width)
         matches_img: ndarray = cv2.resize(matches_img, (0, 0), fx=scale_factor, fy=scale_factor)
 
-    # Overlay the matches image on the original frame
     frame[0: matches_img.shape[0], 0: matches_img.shape[1]] = matches_img
 
     return frame
+
+
+def draw_keypoints_on_image(path: str) -> None:
+    """Draw keypoints on the given image."""
+    image: ndarray = cv2.imread(str(path))
+    keypoints, descriptors = extract_sift_features(image)
+    img_key: ndarray = cv2.drawKeypoints(image, keypoints, None, color=(0, 255, 0),
+                                         flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    cv2.imwrite('./image_with_keypoints.jpg', img_key)
 
 
 def main(folder_path: str) -> None:
@@ -141,7 +147,6 @@ def main(folder_path: str) -> None:
         if not ret:
             break
 
-        # Find the best match and get the keypoints and good matches
         match_result: tuple = find_best_match(frame, image_features)
 
         if match_result is not None:
@@ -152,7 +157,6 @@ def main(folder_path: str) -> None:
             )
 
         cv2.imshow("Webcam", frame)
-
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
@@ -161,4 +165,5 @@ def main(folder_path: str) -> None:
 
 
 if __name__ == "__main__":
-    main("boardgame-images")
+    main("./boardgame-images")
+    draw_keypoints_on_image("./boardgame-images/rey-paparajote.jpg")
