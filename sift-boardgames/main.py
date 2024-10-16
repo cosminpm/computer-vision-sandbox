@@ -84,8 +84,13 @@ def find_best_match(frame: ndarray, image_features: list[tuple]) -> tuple | None
     return None
 
 
-def draw_matches_on_frame(frame: ndarray, best_image: ndarray, keypoints_frame: list,
-                          keypoints_best_image: list, good_matches: list) -> ndarray:
+def draw_matches_on_frame(
+    frame: ndarray,
+    best_image: ndarray,
+    keypoints_frame: list,
+    keypoints_best_image: list,
+    good_matches: list,
+) -> ndarray:
     """Draw SIFT keypoints matches in the frame.
 
     Args:
@@ -116,7 +121,7 @@ def draw_matches_on_frame(frame: ndarray, best_image: ndarray, keypoints_frame: 
         scale_factor = min(frame.shape[0] / overlay_height, frame.shape[1] / overlay_width)
         matches_img: ndarray = cv2.resize(matches_img, (0, 0), fx=scale_factor, fy=scale_factor)
 
-    frame[0: matches_img.shape[0], 0: matches_img.shape[1]] = matches_img
+    frame[0 : matches_img.shape[0], 0 : matches_img.shape[1]] = matches_img
 
     return frame
 
@@ -125,9 +130,10 @@ def draw_keypoints_on_image(path: str) -> None:
     """Draw keypoints on the given image."""
     image: ndarray = cv2.imread(str(path))
     keypoints, descriptors = extract_sift_features(image)
-    img_key: ndarray = cv2.drawKeypoints(image, keypoints, None, color=(0, 255, 0),
-                                         flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-    cv2.imwrite('./image_with_keypoints.jpg', img_key)
+    img_key: ndarray = cv2.drawKeypoints(
+        image, keypoints, None, color=(0, 255, 0), flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
+    )
+    cv2.imwrite("./image_with_keypoints.jpg", img_key)
 
 
 def main(folder_path: str) -> None:
