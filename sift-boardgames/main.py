@@ -172,4 +172,3 @@ def main(folder_path: str) -> None:
 
 if __name__ == "__main__":
     main("./boardgame-images")
-    draw_keypoints_on_image("./boardgame-images/rey-paparajote.jpg")

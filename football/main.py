@@ -35,7 +35,8 @@ class Player:
         self.current_key = ""
 
 
-def take_screenshot():
+def record_and_play():
+    """Record a specific area and simulate a very very very very basic player..."""
     p = Player()
     while True:
         screenshot = ImageGrab.grab(bbox)
@@ -73,6 +74,7 @@ def take_screenshot():
 
 
 def compare(screen: np.ndarray, desired: np.ndarray) -> tuple | None:
+    """Compare the screenshot with the desired image and return where it is."""
     result = cv.matchTemplate(screen, desired, cv.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
 
@@ -90,4 +92,4 @@ def compare(screen: np.ndarray, desired: np.ndarray) -> tuple | None:
 
 
 if __name__ == "__main__":
-    take_screenshot()
+    record_and_play()
