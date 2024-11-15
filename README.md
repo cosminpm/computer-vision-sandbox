@@ -36,3 +36,12 @@ Simple use of [Hough Transform Circles](https://docs.opencv.org/3.4/d4/d70/tutor
 <p align="center">
 <img src=".github/images/3.JPG"/>
 </p>
+
+
+### Augmented Reality
+
+Simple use of [ArUco](https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html) markers for position detection, with some extra code you can create a simple augmented reality app/game as Invizimals. 
+
+<p align="center">
+<img width="355" alt="image" src="https://github.com/user-attachments/assets/d0a17f27-a98d-42e0-8121-f2a47d00d870">
+</p>
